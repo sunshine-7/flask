@@ -23,12 +23,14 @@ from app.mod_auth.forms import LoginForm
 from app.mod_auth.models import User
 # Define the blueprint: 'auth', set its url prefix: app.url/auth
 
-
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 # Set the route and accepted methods
+
 @mod_auth.route('/signin/', methods=['GET', 'POST'])
 # @mod_auth.route('/signin/', methods=['POST'])
+# 先运行run.py，再运行client.py
+
 def signin():
     if request.method=="POST":
         po=request.get_data()
@@ -45,8 +47,11 @@ def signin():
         # plt.show()
         imgEncode = cv2.imencode(".jpg", imgray)[1]
         imgstr = np.array(imgEncode).tostring()
-        imgData = base64.b64encode(imgstr)
-        return imgData
+        imgrayData=base64.b64encode(imgstr)
+        # 定义全局变量final
+        global final
+        final=imgrayData
+    return final
     # if request.method=='GET':
     #     data='已发送'
     #     return data
